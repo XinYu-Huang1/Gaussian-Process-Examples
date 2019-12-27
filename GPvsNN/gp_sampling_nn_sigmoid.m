@@ -65,14 +65,14 @@ grid on;
 
 xlabel('x');ylabel('f(x)');
 
-title(strcat(['Functions drawn from soomth priors for NN (tanh hidden units) with ','\sigma_u = '],num2str(sigma_u)));
+title(strcat(['Functions drawn from soomth priors for NN (sigmoid hidden units) with ','\sigma_u = '],num2str(sigma_u)));
 
 saveas(gcf,strcat('figs/tanh_siamg_u=',num2str(sigma_u),'.jpg'))
 
 hold off;
 
 
-% define step function 
+% define sigmoid function 
 % 
 
 function y = sigmoid_func(x)
