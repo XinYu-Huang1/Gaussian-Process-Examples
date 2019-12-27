@@ -39,4 +39,4 @@ ylabel('output, fx')
 set(gca,'fontsize',28,'linewidth',2);
 legend('95% CR','samples1','samples2','samples3','samples4','samples5','samples6')
 hh = findobj('tag','legend');%|
-set(hh,'fontsize',15) %| 设置legend字号大小
+set(hh,'fontsize',15) %| 脡猫脰脙legend脳脰潞脜麓贸脨隆
