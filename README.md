@@ -1,2 +1,2 @@
 # Gaussian-Process-textbook-examples
-Some demo related to GPML 
+Some demos related to GPML 
