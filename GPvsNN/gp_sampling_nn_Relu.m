@@ -26,6 +26,7 @@ sigma_u = sigma_a * 1;                       % variance of weight parameters
 sigma_b = 1;                                 % variance of bias b
 omega_v = 1;    
 sigma_v = omega_v * 1/(sqrt(H));             % variance of weight parameters v
+lamda = 10;                                   % lamda for Relu function
 figure
 
 for jj = 1:N         
@@ -48,7 +49,7 @@ for jj = 1:N
         % activiation function 
         actv{ii} = a + u .* x(ii);
 
-        h{ii} = sigmoid_func(actv{ii});   % hidden units
+        h{ii} = relu_func(actv{ii},lamda);   % hidden units
 
         % Hidden to output 
 
@@ -65,16 +66,8 @@ grid on;
 
 xlabel('x');ylabel('f(x)');
 
-title(strcat(['Functions drawn from soomth priors for NN (sigmoid hidden units) with ','\sigma_u = '],num2str(sigma_u)));
+title(strcat(['Functions drawn from soomth priors for NN (Relu hidden units) with ','\sigma_u = '],num2str(sigma_u)));
 
-saveas(gcf,strcat('figs/sigmoid_siamg_u=',num2str(sigma_u),'.jpg'))
+saveas(gcf,strcat('figs/Relu_siamg_u=',num2str(sigma_u),'.jpg'))
 
 hold off;
-
-
-% define sigmoid function 
-% 
-
-function y = sigmoid_func(x)
- y = 1./(1+exp(-x));
-end

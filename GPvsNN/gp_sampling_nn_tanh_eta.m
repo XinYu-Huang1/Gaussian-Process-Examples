@@ -4,38 +4,45 @@
 
 close all;
 clc; clear;
-
 addpath('functions')  
 
-% s = 35; randn('seed',s)                         % making sure the same random seed 
+s = 35; randn('seed',s)                         % making sure the same random seed 
 
 x = linspace(-5,5,1000)';  
 
 tsize =size(x,1);
 
 N = 2;                                           % # of samples want to draw
-
 Color = linspecer(N);                            % set color
 
-% parameters setup for simulations
+eta = 3;                                   % parameter for signz activiation function 
 I = 1;                                       % dimensionality of input space
 H = 10000;                                   %  # of Hidden unit 
 mean = 0;
-sigma_a = 5;                                % variance of bias a
-sigma_u = sigma_a * 1;                       % variance of weight parameters
+
+omega_a = 1;                                 % omega of bias a
+omega_u = 1;                                 % omega of weight parameters
 sigma_b = 1;                                 % variance of bias b
 omega_v = 1;    
-sigma_v = omega_v * 1/(sqrt(H));             % variance of weight parameters v
+% variance of weight parameters v
+sigma_v = omega_v * 1/(sqrt(H));     
+
+% gaussian distribution of a & u
+x_par = 0.01:0.1:20;
+A_j = pdfrnd(x_par, invgamdis(x_par,eta), H);
+for ii = 1:H
+    sigma_a(ii) = A_j(ii) * omega_a;
+    a(ii) = normrnd(mean,sigma_a(ii),1,1);
+    
+    sigma_u(ii) = A_j(ii) * omega_u;
+    u(ii) = normrnd(mean,sigma_u(ii),1,1);
+end
+
 figure
 
-for jj = 1:N         
-
+for jj = 1:N  
     % define one-layer hidden neural network with one-dimensional input data x
     % and one-dimensional output 
-
-    a = normrnd(mean,sigma_a,1,H);
-
-    u = normrnd(mean,sigma_u,1,H);
 
     b = normrnd(mean,sigma_b,1,1);
 
@@ -48,7 +55,7 @@ for jj = 1:N
         % activiation function 
         actv{ii} = a + u .* x(ii);
 
-        h{ii} = sigmoid_func(actv{ii});   % hidden units
+        h{ii} = tanh_func(actv{ii});   % hidden units
 
         % Hidden to output 
 
@@ -65,16 +72,8 @@ grid on;
 
 xlabel('x');ylabel('f(x)');
 
-title(strcat(['Functions drawn from soomth priors for NN (sigmoid hidden units) with ','\sigma_u = '],num2str(sigma_u)));
+title(strcat(['Functions drawn from fractional Brownian priors for NN (H = 10000 tanh units) with ','\eta = '],num2str(eta)));
 
-saveas(gcf,strcat('figs/sigmoid_siamg_u=',num2str(sigma_u),'.jpg'))
+saveas(gcf,strcat('figs/tanh_ita=',num2str(eta),'.jpg'))
 
 hold off;
-
-
-% define sigmoid function 
-% 
-
-function y = sigmoid_func(x)
- y = 1./(1+exp(-x));
-end

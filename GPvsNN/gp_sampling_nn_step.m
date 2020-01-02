@@ -4,32 +4,31 @@
 
 close all;
 clc; clear;
-
 addpath('functions')  
 
-% s = 35; randn('seed',s)                         % making sure the same random seed 
+% s = 32; randn('seed',s)                         % making sure the same random seed 
 
 x = linspace(-5,5,1000)';  
-
 tsize =size(x,1);
 
 N = 2;                                           % # of samples want to draw
-
 Color = linspecer(N);                            % set color
 
 % parameters setup for simulations
 I = 1;                                       % dimensionality of input space
 H = 10000;                                   %  # of Hidden unit 
 mean = 0;
-sigma_a = 5;                                % variance of bias a
-sigma_u = sigma_a * 1;                       % variance of weight parameters
+sigma_a = 1;                                % variance of bias a
+sigma_u = 1;                                 % variance of weight parameters
 sigma_b = 1;                                 % variance of bias b
 omega_v = 1;    
-sigma_v = omega_v * 1/(sqrt(H));             % variance of weight parameters v
+% variance of weight parameters v
+sigma_v = omega_v * 1/(sqrt(H));   
+
+
 figure
-
-for jj = 1:N         
-
+for jj = 1:N
+    
     % define one-layer hidden neural network with one-dimensional input data x
     % and one-dimensional output 
 
@@ -48,7 +47,7 @@ for jj = 1:N
         % activiation function 
         actv{ii} = a + u .* x(ii);
 
-        h{ii} = sigmoid_func(actv{ii});   % hidden units
+        h{ii} = step_func(actv{ii});   % hidden units
 
         % Hidden to output 
 
@@ -65,16 +64,12 @@ grid on;
 
 xlabel('x');ylabel('f(x)');
 
-title(strcat(['Functions drawn from soomth priors for NN (sigmoid hidden units) with ','\sigma_u = '],num2str(sigma_u)));
+title(strcat(['Functions drawn from Brownian priors for NN (step hidden units) with ','H = '],num2str(H)));
 
-saveas(gcf,strcat('figs/sigmoid_siamg_u=',num2str(sigma_u),'.jpg'))
+saveas(gcf,strcat('figs/setp_H=',num2str(H),'.jpg'))
 
 hold off;
 
-
-% define sigmoid function 
-% 
-
-function y = sigmoid_func(x)
- y = 1./(1+exp(-x));
-end
+set(gca,'fontsize',28,'linewidth',2);
+hh = findobj('tag','legend');%|
+set(hh,'fontsize',15) %| …Ë÷√legend◊÷∫≈¥Û–°
